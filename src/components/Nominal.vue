@@ -6,6 +6,7 @@
 <script>
 import {TabulatorFull as Tabulator} from 'tabulator-tables';
 import {ref, computed, onMounted, watch} from "vue";
+import keys from "../private/keys";
 
 
 export default {
@@ -31,7 +32,7 @@ export default {
         headers: {
           'Content-type': 'application/json; charset=utf-8',
           'X-Requested-With': 'XMLHttpRequest',
-          'API': 'df5ce87320edfbe74fa933102673db30cfd1a1df39484a1a3dd5e1a6e88b1a7f'
+          'API': keys['apiKey']
         },
       },
       ajaxError: function (xhr, textStatus, errorThrown) {
