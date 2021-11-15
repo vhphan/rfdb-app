@@ -7,25 +7,25 @@
 import {TabulatorFull as Tabulator} from 'tabulator-tables';
 import {ref, computed, onMounted, watch} from "vue";
 import keys from "../private/keys";
+import {useStore} from "vuex";
 
 
 export default {
-  name: "nominal",
+  name: "rfTable",
   props: {
-    tableName: {type: String, default: 'nominal_view'}
+    tableName: {type: String, required: true},
   },
   setup: function (props) {
-
+    const store = useStore();
     const table = ref(null);
     let tabulator = ref(null);
     const href = `https://ndo-portal.eprojecttrackers.com/main.php?action=tabulatorPG&table=${props.tableName}&view=1`;
     const tableOptions = {
-      reactiveData:true,
-      persistence: {
-        filter: true, //persist filter
-        sort: true, //persist filter
-      },
-      ajaxSorting: true,
+      reactiveData: true,
+      // persistence: {
+      //   filter: true, //persist filter
+      //   sort: true, //persist filter
+      // },
       ajaxURL: href,
       ajaxConfig: {
         // method: 'GET',
@@ -35,26 +35,22 @@ export default {
           'API': keys['apiKey']
         },
       },
-      ajaxError: function (xhr, textStatus, errorThrown) {
-        alert('You may be logged out.', 'danger');
-      },
-      ajaxFiltering: true,
-      ajaxResponse: function (url, params, response) {
-        //url - the URL of the request
-        //params - the parameters passed with the request
-        //response - the JSON object returned in the body of the response.
-        console.log(this.getSorters());
-        return response; //return the response data to tabulator
-      },
+      sortMode:"remote",
+      filterMode:"remote",
+      // ajaxResponse: function (url, params, response) {
+      //   //url - the URL of the request
+      //   //params - the parameters passed with the request
+      //   //response - the JSON object returned in the body of the response.
+      //   return response; //return the response data to tabulator
+      // },
       autoResize: false,
       pagination: true,
       paginationMode: 'remote',
       paginationSize: 100,
-      paginationInitialPage: 1,
+      paginationInitialPage:   1,
       autoColumns: true,
       autoColumnsDefinitions: function (definitions) {
         //definitions - array of column definition objects
-
         definitions.forEach((column) => {
           column.headerFilter = true; // add header filter to every column
           column.headerFilterLiveFilter = false;
@@ -63,27 +59,26 @@ export default {
         return definitions;
       },
       maxHeight: '90vh',
-      renderComplete: function () {
-        // setFilters(this);
-      },
-      renderStarted: function () {
-      },
-      dataFiltered: function (filters, rows) {
-        //filters - array of filters currently applied
-        // const headerFilters = this.getHeaderFilters();
-        // let filterText = headerFilters.map(h => {
-        //   const {field, type, value} = h;
-        //   return `${field} ${type} ${value}`;
-        // }).join(', ');
-        // i;
-        // if (filterText.trim() === '') filterText = 'NONE';
-        // document.getElementById('tabulator-info-text').innerText = 'FILTER := ' + filterText;
-      },
+
+
     };
 
     onMounted(() => {
       tabulator.value = new Tabulator(table.value, tableOptions);
+      tabulator.value.on("rowClick", function (e, row) {
+        //e - the click event object
+        //row - row component
+        const rowData = row.getData();
+        if ('nominal_id' in rowData) {
+          store.dispatch('rfdb/setNominalId', rowData['nominal_id']);
+        }
+      });
     })
+
+    // watch(()=>props.tableFilters, (newObj, oldObj)=>{
+    //   console.log(newObj);
+    //   console.log(oldObj);
+    // }, {deep: true})
 
     return {
       table,
@@ -95,4 +90,7 @@ export default {
 </script>
 
 <style>
+.tabulator{
+  font-size: 13px !important;
+}
 </style>

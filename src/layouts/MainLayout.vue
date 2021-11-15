@@ -25,6 +25,7 @@
 
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
       <!-- drawer content -->
+
       <VerTabs/>
     </q-drawer>
 
@@ -49,6 +50,7 @@
             <q-btn fab icon="close" color="negative" @click="closeRightDrawer"/>
           </div>
           <!--          <right-drawer-contents/>-->
+<!--          <right-drawer-tables />-->
         </q-scroll-area>
       </div>
     </q-drawer>
@@ -63,9 +65,9 @@
 <script>
 import {ref} from 'vue'
 import VerTabs from "../components/VerTabs.vue";
-
+import RightDrawerTables from "../components/RightDrawerTables.vue";
 export default {
-  components: {VerTabs},
+  components: {RightDrawerTables, VerTabs},
   setup() {
     const leftDrawerOpen = ref(false)
     const rightDrawerOpen = ref(false)
