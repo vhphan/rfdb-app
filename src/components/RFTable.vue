@@ -22,10 +22,10 @@ export default {
     const href = `https://ndo-portal.eprojecttrackers.com/main.php?action=tabulatorPG&table=${props.tableName}&view=1`;
     const tableOptions = {
       reactiveData: true,
-      // persistence: {
-      //   filter: true, //persist filter
-      //   sort: true, //persist filter
-      // },
+      persistence: {
+        filter: true, //persist filter
+        sort: true, //persist filter
+      },
       ajaxURL: href,
       ajaxConfig: {
         // method: 'GET',
@@ -35,8 +35,20 @@ export default {
           'API': keys['apiKey']
         },
       },
-      sortMode:"remote",
-      filterMode:"remote",
+      renderComplete: function (params) {
+        console.log('renderComplete', params);
+        console.log(this.getFilters());
+
+      },
+      ajaxResponse: function (url, params, response) {
+        //url - the URL of the request
+        //params - the parameters passed with the request
+        //response - the JSON object returned in the body of the response.
+        console.log(this.getSorters());
+        return response; //return the response data to tabulator
+      },
+      sortMode: "remote",
+      filterMode: "remote",
       // ajaxResponse: function (url, params, response) {
       //   //url - the URL of the request
       //   //params - the parameters passed with the request
@@ -47,7 +59,7 @@ export default {
       pagination: true,
       paginationMode: 'remote',
       paginationSize: 100,
-      paginationInitialPage:   1,
+      paginationInitialPage: 1,
       autoColumns: true,
       autoColumnsDefinitions: function (definitions) {
         //definitions - array of column definition objects
@@ -90,7 +102,7 @@ export default {
 </script>
 
 <style>
-.tabulator{
+.tabulator {
   font-size: 13px !important;
 }
 </style>
