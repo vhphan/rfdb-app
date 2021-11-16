@@ -22,7 +22,7 @@
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="candidates">
             <div class="text-h6">Candidates</div>
-            <rf-table table-name="candidates_view" />
+            <rf-table table-name="candidates_view" :table-filters="tableFilters" />
           </q-tab-panel>
 
           <q-tab-panel name="configs">
@@ -49,11 +49,11 @@ export default {
   setup() {
     const store = useStore();
     const nominalId = computed(() => store.state.rfdb.nominalId).value;
-    const tableFilters = reactive(
-        {
-          nominalId,
-        }
-    )
+    const tableFilters = computed(() => {
+      return {
+        'Nominal ID': store.state.rfdb.nominalId,
+      }
+    });
     return {
       tab: ref('candidates'),
       tableFilters,

@@ -50,7 +50,7 @@
             <q-btn fab icon="close" color="negative" @click="closeRightDrawer"/>
           </div>
           <!--          <right-drawer-contents/>-->
-<!--          <right-drawer-tables />-->
+          <right-drawer-tables />
         </q-scroll-area>
       </div>
     </q-drawer>
