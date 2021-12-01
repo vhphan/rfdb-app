@@ -5,7 +5,9 @@ export default {
     state: {
         nominal: [],
         nominalId: null,
+        nominalIdList: [],
         mainTable: null,
+        containerSize: null,
     },
     getters: {},
     mutations: {
@@ -15,7 +17,12 @@ export default {
         setNominalId: (state, value)=> {
             state.nominalId = value;
         },
-
+        setNominalIdList: (state, value)=> {
+            state.nominalIdList = value;
+        },
+        setContainerSize: (state, value)=> {
+            state.containerSize = value;
+        },
     },
     actions: {
         getNominalData: () => {
@@ -26,6 +33,12 @@ export default {
         },
         setNominalId: ({commit}, value) => {
             commit('setNominalId', value);
-        }
+        },
+        setNominalIdList: ({commit}, value) => {
+            commit('setNominalIdList', value);
+        },
+        setContainerSize: ({commit}, value) => {
+            commit('setContainerSize', value);
+        },
     }
 }

@@ -20,22 +20,31 @@ import store from "./store";
 const myApp = createApp(App);
 myApp.use(router);
 myApp.use(store);
+import {Notify, LoadingBar, Dialog} from 'quasar';
 
 myApp.use(Quasar, {
-    plugins: {}, // import Quasar plugins and add here
-    iconSet: iconSet
-    /*
+    plugins: {
+        Notify,
+        LoadingBar,
+        Dialog
+    }, // import Quasar plugins and add here
+    iconSet: iconSet,
+
     config: {
-      brand: {
-        // primary: '#e46262',
-        // ... or all other brand colors
-      },
-      notify: {...}, // default set of options for Notify Quasar plugin
-      loading: {...}, // default set of options for Loading Quasar plugin
-      loadingBar: { ... }, // settings for LoadingBar Quasar plugin
-      // ..and many more (check Installation card on each Quasar component/directive/plugin)
+        brand: {
+            // primary: '#e46262',
+            // ... or all other brand colors
+        },
+        notify: {}, // default set of options for Notify Quasar plugin
+        // loading: {...}, // default set of options for Loading Quasar plugin
+        loadingBar: {
+            color: 'purple',
+            size: '15px',
+            position: 'bottom'
+        }, // settings for LoadingBar Quasar plugin
+        // ..and many more (check Installation card on each Quasar component/directive/plugin)
     }
-    */
+
 });
 
 // Assumes you have a <div id="app"></div> in your index.html
@@ -53,3 +62,9 @@ router.afterEach((to, from) => {
         })
     }
 });
+
+LoadingBar.setDefaults({
+  color: 'purple',
+  size: '15px',
+  position: 'bottom'
+})

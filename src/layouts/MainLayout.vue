@@ -1,5 +1,6 @@
 <template>
   <q-layout view="lHr lpR lFr">
+    <q-resize-observer @resize="onResize"/>
 
     <q-header elevated class="bg-primary text-white" height-hint="58">
       <q-toolbar>
@@ -28,7 +29,9 @@
 
       <VerTabs/>
     </q-drawer>
-
+    <q-page-container id="container">
+      <router-view/>
+    </q-page-container>
     <q-drawer
         side="right"
         v-model="rightDrawerOpen"
@@ -50,30 +53,42 @@
             <q-btn fab icon="close" color="negative" @click="closeRightDrawer"/>
           </div>
           <!--          <right-drawer-contents/>-->
-          <right-drawer-tables />
+          <right-drawer-tables/>
         </q-scroll-area>
       </div>
     </q-drawer>
 
-    <q-page-container>
-      <router-view/>
-    </q-page-container>
 
   </q-layout>
 </template>
 
 <script>
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import VerTabs from "../components/VerTabs.vue";
 import RightDrawerTables from "../components/RightDrawerTables.vue";
+import {useStore} from "vuex";
+
 export default {
   components: {RightDrawerTables, VerTabs},
   setup() {
+    const store = useStore();
     const leftDrawerOpen = ref(false)
     const rightDrawerOpen = ref(false)
-    const rightDrawerWidth = ref(600);
+    const rightDrawerWidth = ref(800);
     let originalWidth;
     let originalLeft;
+    onMounted(() => {
+      console.log(document.getElementById('container').clientWidth);
+    })
+    const onResize = (size) => {
+      console.log(size);
+      rightDrawerWidth.value = size.width/2;
+      const clientWidth = document.getElementById('container').clientWidth;
+      console.log(clientWidth);
+      store.dispatch('rfdb/setContainerSize',
+          clientWidth
+      )
+    }
     return {
       leftDrawerOpen,
       toggleLeftDrawer() {
@@ -88,6 +103,7 @@ export default {
         rightDrawerOpen.value = !rightDrawerOpen.value
       },
       rightDrawerWidth,
+      onResize,
       handlePan({evt, ...newInfo}) {
         if (newInfo.isFirst) {
           originalWidth = rightDrawerWidth.value
@@ -95,10 +111,11 @@ export default {
         } else {
           const newDelta = newInfo.position.left - originalLeft;
           // Should add (instead of subtract) for left drawer
-          let newWidth = Math.max(200, Math.min(800, originalWidth - newDelta));
+          let newWidth = Math.max(200, Math.min(1800, originalWidth - newDelta));
           rightDrawerWidth.value = newWidth;
         }
       },
+
     }
   }
 }

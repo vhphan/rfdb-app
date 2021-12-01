@@ -1,16 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../components/Home.vue';
-import rfTable from '../components/RFTable.vue';
+import NominalTable from "../components/NominalTable.vue";
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    name: 'Nominal',
+    component: NominalTable,
   }, {
     path: '/nominal',
     name: 'Nominal',
-    component: rfTable,
-    props: {tableName: 'nominal_view'}
+    component: NominalTable,
   },
 ]
 const router = createRouter({
