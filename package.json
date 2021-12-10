@@ -2,8 +2,8 @@
   "name": "my-vue-app",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "vite --base=/app/rfdb/",
+    "build": "vite build --base=/app/rfdb/",
     "serve": "vite preview"
   },
   "dependencies": {
@@ -12,6 +12,7 @@
     "quasar": "^2.2.1",
     "tabulator-tables": "^4.9.3",
     "vue": "^3.2.16",
+    "vue-form-json-schema": "^2.9.5",
     "vue-router": "4",
     "vuex": "^4.0.2"
   },

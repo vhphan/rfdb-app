@@ -1,46 +1,34 @@
 <template>
-  <div class="q-pa-xs">
-    <div class="q-gutter-y-md">
-        <q-tabs
-            v-model="tab"
-            dense
-            align="left"
-            narrow-indicator
-            class="bg-primary text-white shadow-2"
-            :breakpoint="0"
-        >
-          <q-tab name="candidates" label="Candidates"/>
-          <q-tab name="configs" label="Configs"/>
-          <q-tab name="map" label="Map"/>
+  <q-layout
+  >
+    <q-header elevated class="bg-primary text-white" height-hint="58">
+      <q-toolbar>
+        <!--        <q-toolbar-title>-->
+        <!--          -->
+        <!--        </q-toolbar-title>-->
+
+        <q-tabs align="left">
+          <q-route-tab :to="{name: 'Candidates'}" label="Candidates"/>
+          <q-route-tab :to="{name: 'Configs'}" label="Configs"/>
         </q-tabs>
-        <q-separator/>
+      </q-toolbar>
+    </q-header>
+    <q-page-container id="containerRight">
+      <router-view name="right"/>
+    </q-page-container>
+  </q-layout>
 
-        <q-tab-panels v-model="tab" animated>
-          <q-tab-panel name="candidates">
-            <CandidatesTable/>
-          </q-tab-panel>
-
-          <q-tab-panel name="configs">
-            <ConfigTable/>
-          </q-tab-panel>
-
-          <q-tab-panel name="map">
-            <div class="text-h6">Map</div>
-          </q-tab-panel>
-        </q-tab-panels>
-    </div>
-  </div>
 </template>
 
 <script>
 import {computed, ref} from "vue";
 import {useStore} from "vuex";
 import CandidatesTable from "./CandidatesTable.vue";
-import ConfigTable from "./ConfigsTable.vue";
+import ConfigsTable from "./ConfigsTable.vue";
 
 export default {
   name: "RightDrawerTables",
-  components: {ConfigTable, CandidatesTable},
+  components: {ConfigsTable, CandidatesTable},
   setup() {
     return {
       tab: ref('candidates'),

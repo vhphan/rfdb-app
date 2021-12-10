@@ -1,20 +1,37 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../components/Home.vue';
+import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router';
 import NominalTable from "../components/NominalTable.vue";
+import CandidatesTable from "../components/CandidatesTable.vue";
+import ConfigsTable from "../components/ConfigsTable.vue";
+
+
+
 const routes = [
-  {
-    path: '/',
-    name: 'Nominal',
-    component: NominalTable,
-  }, {
-    path: '/nominal',
-    name: 'Nominal',
-    component: NominalTable,
-  },
+    {
+        path: '/app/rfdb/', redirect: {name: 'Configs'},
+        name: 'Home',
+    }, {
+        path: '/app/rfdb/nominal/configs',
+        name: 'Configs',
+        components: {
+            left: NominalTable,
+            right: ConfigsTable
+        }
+    },
+    {
+        path: '/app/rfdb/nominal/candidates',
+        name: 'Candidates',
+        components: {
+            left: NominalTable,
+            right: CandidatesTable
+        }
+    },
 ]
+
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+    base: '/app/rfdb/',
+    history: createWebHistory(),
+    mode: 'history',
+    routes,
 })
 
 

@@ -22,9 +22,12 @@
         </div>
         <div>
           <q-btn class="q-ma-xs" label="Submit" type="submit" color="primary"/>
-          <q-btn class="q-ma-xs" color="primary" label="OK" @click="onOKClick"/>
-          <q-btn class="q-ma-xs" color="primary" label="Cancel" @click="onCancelClick"/>
+
           <!--          <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm"/>-->
+        </div>
+        <div>
+<!--          <q-btn class="q-ma-xs" color="secondary" label="Ok" @click="onOKClick"/>-->
+          <q-btn class="q-ma-xs" color="secondary" label="CLOSE" @click="onCancelClick"/>
         </div>
       </q-form>
 
@@ -47,13 +50,26 @@ import {onMounted, reactive, ref} from "vue";
 import {apiNode} from "../plugins/http";
 
 export default {
-  name: 'TestDialog',
+  name: 'UpdateTableDialog',
   props: {
-    row: {
+    rowData: {
       type: Object,
       required: false,
       default: {}
-    }
+    },
+    tableRef: {
+      type: Object,
+      required: false,
+      default: null
+    },
+    url: {
+      type: String,
+      required: true
+    },
+    editableColumns: {
+      type: Array,
+      required: true
+    },
   },
 
   emits: [
@@ -76,44 +92,48 @@ export default {
     const name = ref('')
 
 
-    const {row} = props;
-    const formData = reactive(row)
+    const {rowData} = props;
+    const formData = reactive(rowData);
     const columnList = ref([]);
     //0: 'dnb_index', 1: 'nominal_siteid', 2: 'nominal_id', 3: 'rf_pic', 4: 'active_model', 5: 'morphology', 6: 'nominal_latitude', 7: 'nominal_longitude', 8: 'phase_deployment', 9: 'phase_commercial', 10: 'nominal_change_log', 11: 'District', 12: 'State
-    const editableColumnList = [
-      'nominal_siteid',
-      'rf_pic',
-      'active_model',
-      'nominal_longitude',
-      'nominal_latitude',
-      'phase_deployment',
-      'phase_commercial',
-    ];
+    // [
+    //   'AntModel',
+    //   'AntHeight',
+    //   'AntDirection',
+    //   'AntEtilt',
+    //   'AntMtilt',
+    // ];
+    const editableColumnList = props.editableColumns;
     const isEditable = (column) => editableColumnList.includes(column)
     const onSubmit = async () => {
       console.log('submit');
       console.log(formData);
-      try {
-        const result = (await apiNode.put('/updateNominal', formData)).data;
-        //  {"result":"success"}
+      const result = (await apiNode.put(props.url, formData)).data;
+      //  {"result":"success"}
+      if (result['result'] === 'success') {
         $q.notify({
           message: JSON.stringify(result),
           color: 'green'
-        })
-      } catch (e) {
-        console.log(e);
-        $q.notify({
-          message: JSON.stringify(e.message),
-          color: 'red'
-        })
+        });
+        return;
       }
+      if (props.tableRef) props.tableRef.setData();
+
+      $q.notify({
+        message: 'ERROR updating!',
+        color: 'red'
+      });
+      $q.notify({
+        message: JSON.stringify(result),
+        color: 'red'
+      });
     };
 
     const onReset = () => {
       name.value = null
     }
     onMounted(() => {
-      for (const [key, value] of Object.entries(row)) {
+      for (const [key, value] of Object.entries(rowData)) {
         columnList.value.push(key);
       }
     })

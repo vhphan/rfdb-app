@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update</title>
+</head>
+<body>
+<h3>Update</h3>
+<script>
+
+    function getSearchParameters() {
+        var prmstr = window.location.search.substr(1);
+        return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+    }
+
+    function transformToAssocArray(prmstr) {
+        var params = {};
+        var prmarr = prmstr.split("&");
+        for (var i = 0; i < prmarr.length; i++) {
+            var tmparr = prmarr[i].split("=");
+            params[tmparr[0]] = tmparr[1];
+        }
+        return params;
+    }
+
+    const params = getSearchParameters();
+    console.log(params);
+
+</script>
+</body>
+</html>

@@ -13,24 +13,24 @@
           RFDB Application
         </q-toolbar-title>
 
-        <q-tabs align="left">
-          <q-route-tab to="/" label="Home"/>
-          <!--          <q-route-tab to="/page2" label="Page Two"/>-->
-          <!--          <q-route-tab to="/page3" label="Page Three"/>-->
-        </q-tabs>
+        <!--        <q-tabs align="left">-->
+        <!--          <q-route-tab to="/" label="Home"/>-->
+        <!--          <q-route-tab to="/page2" label="Page Two"/>-->
+        <!--          <q-route-tab to="/page3" label="Page Three"/>-->
+        <!--        </q-tabs>-->
         <q-btn dense flat round icon="menu" @click="toggleRightDrawer"/>
       </q-toolbar>
 
 
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
-      <!-- drawer content -->
+    <!--    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>-->
+    <!--      <VerTabs/>-->
+    <!--    </q-drawer>-->
 
-      <VerTabs/>
-    </q-drawer>
     <q-page-container id="container">
-      <router-view/>
+      <!--      <router-view name="left"/>-->
+      <router-view name="left"/>
     </q-page-container>
     <q-drawer
         side="right"
@@ -40,9 +40,9 @@
         :width="rightDrawerWidth"
         :breakpoint="500"
         class="bg-grey-3"
-        style="height: 100%;"
     >
-      <div class="row fit">
+      <div class="row fit"
+           style="height: 100%; max-width: 100%;">
         <!-- The trick is here: adding the resize div and applying v-touch-pan on it. -->
         <div style="width: 6px; cursor: col-resize;" class="bg-primary"
              v-touch-pan.horizontal.prevent.mouse.preserveCursor="handlePan"
@@ -53,7 +53,9 @@
             <q-btn fab icon="close" color="negative" @click="closeRightDrawer"/>
           </div>
           <!--          <right-drawer-contents/>-->
-          <right-drawer-tables/>
+          <right-drawer-tables
+          :width="rightDrawerWidth"
+          />
         </q-scroll-area>
       </div>
     </q-drawer>
@@ -82,7 +84,7 @@ export default {
     })
     const onResize = (size) => {
       console.log(size);
-      rightDrawerWidth.value = size.width/2;
+      rightDrawerWidth.value = size.width / 2;
       const clientWidth = document.getElementById('container').clientWidth;
       console.log(clientWidth);
       store.dispatch('rfdb/setContainerSize',

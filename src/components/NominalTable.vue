@@ -1,4 +1,8 @@
 <template>
+  <q-btn><a href="https://ndo-portal.eprojecttrackers.com/query_to_zip.php?queryName=rfdb_nominal">EXPORT CSV</a></q-btn>
+  <q-btn>IMPORT UPDATE</q-btn>
+  <q-btn>CLEAR SELECTED ROWS</q-btn>
+  <q-btn>CLEAR SELECTED ROWS</q-btn>
   <rf-table
       table-name="nominal_view"
       table-id="nominal"
@@ -14,15 +18,15 @@ import RfTable from "./RFTable.vue";
 import {useStore} from "vuex";
 import {onMounted, reactive, ref} from "vue";
 import {useQuasar} from "quasar";
-import TestDialog from "./TestDialog.vue";
 import {showError} from "../utils/myFunctions.js";
+import UpdateTableDialog from "./UpdateTableDialog.vue";
 
 export default {
   name: "NominalTable",
   components: {RfTable},
 
   setup: function (props) {
-    const $q = useQuasar()
+    const $q = useQuasar();
     const store = useStore();
     const rowClickFunc = function (e, row) {
       //e - the click event object
@@ -38,24 +42,6 @@ export default {
     };
     onMounted(() => {
     })
-    const showDialog = function (row) {
-      $q.dialog({
-        component: TestDialog,
-
-        // props forwarded to your custom component
-        componentProps: {
-          text: 'something',
-          row
-        }
-      }).onOk(() => {
-        console.log('OK')
-      }).onCancel(() => {
-        console.log('Cancel')
-      }).onDismiss(() => {
-        console.log('Called on OK or Cancel')
-      })
-    }
-
     const ajaxResponseFunction = function (url, params, response) {
       //url - the URL of the request
       //params - the parameters passed with the request
@@ -87,14 +73,58 @@ export default {
         return `<button>${nominalId}</button>`
       }
     }]);
+    const openForm = (rowData) => {
+      const getString = new URLSearchParams(rowData).toString();
+      window.open("/update.html?" + (getString));
+    }
+
+    const showDialog = function (row) {
+      const rowData = row.getData();
+      const tableRef = row._row.table;
+      $q.dialog({
+        component: UpdateTableDialog,
+
+        // props forwarded to your custom component
+        componentProps: {
+          rowData,
+          tableRef,
+          url: '/updateNominal',
+          editableColumns: [
+            'nominal_siteid',
+            'rf_pic',
+            'active_model',
+            'nominal_longitude',
+            'nominal_latitude',
+            'phase_deployment',
+            'phase_commercial',
+          ]
+        }
+      }).onOk(() => {
+        console.log('OK')
+      }).onCancel(() => {
+        console.log('Cancel')
+      }).onDismiss(() => {
+        console.log('Called on OK or Cancel')
+      })
+    };
     const rowContextMenu = [
       {
         label: "Edit Row",
         action: function (e, row) {
           console.log(e);
           console.log(row);
+          console.log(row._row.table);
           console.log(row.getData());
-          showDialog(row.getData());
+          showDialog(row);
+          // const rowData = row.getData();
+          // openForm(rowData);
+        }
+      },{
+        label: "Clear All Selected Rows",
+        action: function (e, row) {
+          row._row.table.deselectRow();
+          // const rowData = row.getData();
+          // openForm(rowData);
         }
       },
     ];
