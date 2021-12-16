@@ -1,7 +1,7 @@
 import axios from 'axios';
 import keys from '../private/keys';
-
-console.log(process.env.NODE_ENV);
+// import {defineConfig, loadEnv} from 'vite';
+// console.log(process.env.apiKey);
 const BASE_URL = process.env.NODE_ENV === 'development' ? 'https://ndo-portal.eprojecttrackers.com' : `https://${window.location.hostname}`;
 
 const BASE_URL_NODE = process.env.NODE_ENV === 'development' ? `http://localhost:3001/node/dnb` : 'https://api.eprojecttrackers.com/node/dnb';
@@ -17,9 +17,15 @@ function createInstance(baseURL) {
         'Content-Type': 'application/json',
     };
     if (process.env.NODE_ENV === 'development') {
-        headers = {...headers, Api: keys['apiKey']}
-    } else {
-        headers = {...headers, Api: getCookie('API')}
+        headers = {
+            ...headers,
+            ...{
+                Api: import.meta.env.VITE_API_KEY,
+                Username: import.meta.env.VITE_USER_NAME,
+            }
+        }
+    } else if (baseURL === BASE_URL_NODE) {
+        headers = {...headers, Api: getCookie('API'), Username: `${getCookie('Name')}`}
     }
     return axios.create({
         baseURL,
@@ -30,4 +36,4 @@ function createInstance(baseURL) {
 const api = createInstance(BASE_URL);
 const apiNode = createInstance(BASE_URL_NODE);
 
-export {api, apiNode};
+export {api, apiNode, BASE_URL_NODE};

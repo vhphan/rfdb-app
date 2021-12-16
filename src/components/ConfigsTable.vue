@@ -1,4 +1,6 @@
 <template>
+  <q-btn><a href="https://ndo-portal.eprojecttrackers.com/query_to_zip.php?queryName=rfdb_config">EXPORT CSV</a></q-btn>
+
   <rf-table table-name="config_view"
             :table-filters-list="tableFiltersList"
             table-id="config"
@@ -12,13 +14,14 @@ import {useStore} from "vuex";
 import {computed, reactive, ref} from "vue";
 import {useQuasar} from "quasar";
 import UpdateTableDialog from "./UpdateTableDialog.vue";
+
 export default {
   name: 'ConfigsTable',
   components: {RfTable},
   setup() {
     const store = useStore();
-       const $q = useQuasar();
- const nominalIdList = computed(() => store.state.rfdb.nominalIdList);
+    const $q = useQuasar();
+    const nominalIdList = computed(() => store.state.rfdb.nominalIdList);
     const tableFiltersList = computed(() => {
       return nominalIdList.value.map(nominalId => {
         return {

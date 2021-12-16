@@ -15,31 +15,10 @@ import {useQuasar} from "quasar";
 
 
 export default {
-  name: "rfTable",
+  name: "simpleTable",
   props: {
     tableName: {type: String, required: true},
-    tableFiltersList: {type: Object, required: false, default: []},
-    boolOperand: {type: String, required: false, default: 'AND'},
     tableId: {type: String, required: true},
-    rowSelectionChangedFunction: {
-      type: Function, default: (d, r) => {
-        console.log(d);
-        console.log(r);
-      }, required: false
-    },
-    ajaxResponseFunction: {
-      type: [Function, Boolean],
-      default: false,
-      required: false
-    },
-    rowClickFunc: {
-      type: Function,
-      default: (e, r) => {
-        console.log(e);
-        console.log(r);
-      },
-      required: false
-    },
     columnOptions: {
       type: Array,
       default: [],
@@ -50,16 +29,18 @@ export default {
       default: {},
       required: false
     },
-
+    ajaxUrl: {
+      type: String,
+      default: '',
+      required: false
+    },
   },
   setup: function (props) {
-    const store = useStore();
     const table = ref(null);
     let tabulator = ref(null);
     let tableRendered = ref(false);
     let ajaxHalted = ref(false);
     const filters = computed(() => tabulator.value.getFilters())
-    const href = `https://ndo-portal.eprojecttrackers.com/main.php?action=tabulatorPG&table=${props.tableName}&view=1&boolOperand=${props.boolOperand}`;
     const $q = useQuasar()
 
     const tableOptions = {
@@ -70,7 +51,7 @@ export default {
       persistence: {
         sort: true, //persist filter
       },
-      ajaxURL: href,
+      ajaxURL: props.ajaxUrl,
       ajaxConfig: {
         // method: 'GET',
         headers: {
@@ -114,7 +95,6 @@ export default {
         }
       },
       autoResize: false,
-      pagination: 'remote', //4.9
       // pagination: true, //5.0
       // paginationMode: 'remote', //5.0
       paginationSize: 100,

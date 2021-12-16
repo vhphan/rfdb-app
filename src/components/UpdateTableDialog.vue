@@ -26,7 +26,7 @@
           <!--          <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm"/>-->
         </div>
         <div>
-<!--          <q-btn class="q-ma-xs" color="secondary" label="Ok" @click="onOKClick"/>-->
+          <!--          <q-btn class="q-ma-xs" color="secondary" label="Ok" @click="onOKClick"/>-->
           <q-btn class="q-ma-xs" color="secondary" label="CLOSE" @click="onCancelClick"/>
         </div>
       </q-form>
@@ -108,21 +108,23 @@ export default {
     const onSubmit = async () => {
       console.log('submit');
       console.log(formData);
-      const result = (await apiNode.put(props.url, formData)).data;
-      //  {"result":"success"}
-      if (result['result'] === 'success') {
+      try {
+        const result = (await apiNode.put(props.url, formData)).data;
+        //  {"result":"success"}
+        if (result['result'] === 'success') {
+          $q.notify({
+            message: JSON.stringify(result),
+            color: 'green'
+          });
+          return;
+        }
+        if (props.tableRef) props.tableRef.setData();
+      } catch (e) {
         $q.notify({
-          message: JSON.stringify(result),
-          color: 'green'
+          message: `ERROR updating! ${e.message}`,
+          color: 'red'
         });
-        return;
       }
-      if (props.tableRef) props.tableRef.setData();
-
-      $q.notify({
-        message: 'ERROR updating!',
-        color: 'red'
-      });
       $q.notify({
         message: JSON.stringify(result),
         color: 'red'

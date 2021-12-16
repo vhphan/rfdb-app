@@ -1,4 +1,7 @@
 <template>
+  <q-btn><a href="https://ndo-portal.eprojecttrackers.com/query_to_zip.php?queryName=rfdb_candidates">EXPORT CSV</a>
+  </q-btn>
+
   <rf-table table-name="candidates_view"
             :table-filters-list="tableFiltersList"
             table-id="candidates"
