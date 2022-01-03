@@ -10,6 +10,7 @@
         <q-tabs align="left">
           <q-route-tab :to="{name: 'Candidates'}" label="Candidates"/>
           <q-route-tab :to="{name: 'Configs'}" label="Configs"/>
+          <q-route-tab :to="{name: 'ChangeLogs'}" label="Change Logs"/>
         </q-tabs>
       </q-toolbar>
     </q-header>

@@ -34,6 +34,7 @@ function createInstance(baseURL) {
 }
 
 const api = createInstance(BASE_URL);
+
 const apiNode = createInstance(BASE_URL_NODE);
 
 export {api, apiNode, BASE_URL_NODE};

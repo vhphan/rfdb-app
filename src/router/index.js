@@ -2,6 +2,7 @@ import { createRouter, createMemoryHistory, createWebHistory, createWebHashHisto
 import NominalTable from "../components/NominalTable.vue";
 import CandidatesTable from "../components/CandidatesTable.vue";
 import ConfigsTable from "../components/ConfigsTable.vue";
+import ChangeLogTable from "../components/ChangeLogTable.vue";
 
 
 
@@ -23,6 +24,14 @@ const routes = [
         components: {
             left: NominalTable,
             right: CandidatesTable
+        }
+    },
+    {
+        path: '/app/rfdb/nominal/change',
+        name: 'ChangeLogs',
+        components: {
+            left: NominalTable,
+            right: ChangeLogTable
         }
     },
 ]

@@ -50,6 +50,11 @@ export default {
       default: {},
       required: false
     },
+    schema: {
+      type: String,
+      default: 'rfdb',
+      required: false
+    },
 
   },
   setup: function (props) {
@@ -59,7 +64,7 @@ export default {
     let tableRendered = ref(false);
     let ajaxHalted = ref(false);
     const filters = computed(() => tabulator.value.getFilters())
-    const href = `https://ndo-portal.eprojecttrackers.com/main.php?action=tabulatorPG&table=${props.tableName}&view=1&boolOperand=${props.boolOperand}`;
+    const href = `https://ndo-portal.eprojecttrackers.com/main.php?action=tabulatorPG&table=${props.tableName}&view=1&boolOperand=${props.boolOperand}&schema=${props.schema}`;
     const $q = useQuasar()
 
     const tableOptions = {

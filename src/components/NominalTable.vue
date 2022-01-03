@@ -1,8 +1,28 @@
 <template>
-  <q-btn><a href="https://ndo-portal.eprojecttrackers.com/query_to_zip.php?queryName=rfdb_nominal">EXPORT CSV</a></q-btn>
-  <q-btn>IMPORT UPDATE</q-btn>
-  <q-btn>CLEAR SELECTED ROWS</q-btn>
-  <q-btn>CLEAR SELECTED ROWS</q-btn>
+  <q-card style="display: inline-block;" class="q-pa-xs q-mx-xs bg-primary" bordered>
+    <q-btn class="bg-white q-mx-xs">
+      <a href="https://ndo-portal.eprojecttrackers.com/query_to_zip.php?queryName=rfdb_nominal">
+        EXPORT CSV
+      </a>
+    </q-btn>
+  </q-card>
+  <q-card style="display: inline-block;" class="q-pa-xs q-mx-xs bg-primary" bordered>
+    <q-btn class="bg-white q-mx-xs">
+      <a target="_blank"
+         href="https://ndo-portal.eprojecttrackers.com/import.php?table=rf_nominal">
+        IMPORT UPDATE
+      </a>
+    </q-btn>
+    <q-btn class="bg-white q-mx-xs">
+      <a target="_blank"
+         href="https://ndo-portal.eprojecttrackers.com/query_to_zip.php?queryName=update_nominal_sample">
+        SAMPLE FILE
+      </a>
+    </q-btn>
+  </q-card>
+  <q-card style="display: inline-block;" class="q-pa-xs q-mx-xs bg-primary" bordered>
+    <q-btn class="bg-white q-mx-xs">CLEAR SELECTED ROWS</q-btn>
+  </q-card>
   <rf-table
       table-name="nominal_view"
       table-id="nominal"
@@ -119,7 +139,7 @@ export default {
           // const rowData = row.getData();
           // openForm(rowData);
         }
-      },{
+      }, {
         label: "Clear All Selected Rows",
         action: function (e, row) {
           row._row.table.deselectRow();
