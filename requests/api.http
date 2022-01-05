@@ -1,0 +1,4 @@
+GET https://ndo-portal.eprojecttrackers.com/api/api.php?action=csvData&table=config_view&pageNum=1&numOfRecords=200
+X-Requested-With: XMLHttpRequest
+API: {{apiKey}}
+Accept: application/json

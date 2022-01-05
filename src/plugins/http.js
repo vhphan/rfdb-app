@@ -1,5 +1,4 @@
 import axios from 'axios';
-import keys from '../private/keys';
 // import {defineConfig, loadEnv} from 'vite';
 // console.log(process.env.apiKey);
 const BASE_URL = process.env.NODE_ENV === 'development' ? 'https://ndo-portal.eprojecttrackers.com' : `https://${window.location.hostname}`;
